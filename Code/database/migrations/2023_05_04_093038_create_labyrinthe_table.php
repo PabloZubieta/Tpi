@@ -8,17 +8,17 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
+     * Creation de la table labyrinthe
      */
     public function up(): void
     {
-        Schema::create('failed_jobs', function (Blueprint $table) {
+        Schema::create('labyrinthe', function (Blueprint $table) {
             $table->id();
-            $table->string('uuid')->unique();
-            $table->text('connection');
-            $table->text('queue');
-            $table->longText('payload');
-            $table->longText('exception');
-            $table->timestamp('failed_at')->useCurrent();
+            $table->string('labyrinthe_code',100)->unique();
+            $table->tinyInteger('lenght');
+            $table->tinyInteger('height');
+            $table->timestamps();
+
         });
     }
 
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('failed_jobs');
+        Schema::dropIfExists('labyrinthe');
     }
 };
