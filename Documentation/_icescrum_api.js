@@ -1,2 +1,2 @@
-var iceScrumToken = 'a47fe63d3db14dab8f1223e0c0528acb'
-projectIds = ['PRETPIVOIT']
+var iceScrumToken = 'd1e650e410d5496aa35c247d5c479995'
+projectIds = ['TPI']
