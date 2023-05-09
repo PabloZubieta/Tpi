@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LabyrintheController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\Authenticate;
 use Illuminate\Support\Facades\Route;
@@ -27,3 +28,9 @@ Route::post('/users', [UserController::class, 'create']);
 route::post('/logout', [UserController::class,'logout'])->middleware(Authenticate::class);
 
 route::post('/log',[UserController::class,'log']);
+
+route::get('/creation',[LabyrintheController::class,'editor'])->middleware(Authenticate::class);
+
+route::get('/resolution',[LabyrintheController::class,'escape'])->middleware(Authenticate::class);
+
+route::get('/historique',[UserController::class,'history'])->middleware(Authenticate::class);
