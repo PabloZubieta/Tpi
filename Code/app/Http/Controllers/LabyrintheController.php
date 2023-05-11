@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Labyrinthe;
 use Illuminate\Http\Request;
 
 class LabyrintheController extends Controller
@@ -242,4 +243,30 @@ class LabyrintheController extends Controller
     {
         return view('mazes.resolution');
     }
+    //fonction d'insertion du labrinthe
+    public function create(Request $request)
+    {
+        $formFields = $request->validate([
+            // verifie si l'utilisateur existe déjà
+            'labyrinthe_code'=>'required',
+            'lenght'=>'required',
+            'height'=>'required'
+
+        ]);
+
+        $formFields['users_id']=auth()->user()->id;
+
+        Labyrinthe::create($formFields);
+
+
+
+
+
+
+        return redirect('/');
+
+
+
+    }
+
 }
