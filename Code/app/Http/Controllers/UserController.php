@@ -93,5 +93,11 @@ class UserController extends Controller
         return redirect('/');
     }
 
+    //fonction d'affichage de la View historique
+    public function history()
+    {
+        return view('users.historique');
+    }
+
 }
 

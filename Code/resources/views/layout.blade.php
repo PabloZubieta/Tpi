@@ -34,9 +34,9 @@ $title= "Get Me Out";
         <li class="nav-item"><a class="nav-link" href="/">Accueil</a></li>
 
         @auth
-            <li class="nav-item"><a class="nav-link" href="#" style="color:#386641">Création</a></li>
-            <li class="nav-item"><a class="nav-link" href="#" style="color:#386641">Résolution</a></li>
-            <li class="nav-item"><a class="nav-link" href="#" style="color:#386641">Historique</a></li>
+            <li class="nav-item"><a class="nav-link" href="/creation" style="color:#386641">Création</a></li>
+            <li class="nav-item"><a class="nav-link" href="/resolution" style="color:#386641">Résolution</a></li>
+            <li class="nav-item"><a class="nav-link" href="/historique" style="color:#386641">Historique</a></li>
             <li class="nav-item" ><form method="post" action="/logout" style="border-color: white;background-color: white; box-shadow:0 0">
                     @csrf
                     <button class="nav-link" type="submit"  style="color:#386641;border-color: white;background-color: white; box-shadow:0 0" >Logout</button>
