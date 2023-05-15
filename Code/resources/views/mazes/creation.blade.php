@@ -6,6 +6,7 @@
  * @version 09.05.2023
  */
 $title = "Création"
+
 ?>
 @extends('layout')
 
@@ -28,7 +29,7 @@ $title = "Création"
                                 <input type="text"  name="labyrinthe_code" id="labyrinthe_code" value="" hidden>
                             </div>
                             <div class="mb-3">
-                                <input type="number"  name="lenght" id="lenght" value="" hidden>
+                                <input type="number"  name="length" id="length" value="" hidden>
                             </div>
                             <div class="mb-3">
                                 <input type="number"  name="height" id="height" value="" hidden>
@@ -94,7 +95,7 @@ $title = "Création"
                             <div class="col-8 row">
                                 <div class="col-6">
                                     <label>Longueur</label><br>
-                                    <input id="setlenght" type="number"  name="setlenght">
+                                    <input id="setlength" type="number"  name="setlength">
                                 </div>
                                 <div class="col-6">
                                     <label>Hauteur</label><br>
@@ -114,9 +115,7 @@ $title = "Création"
 
                         </p>
                     </div>
-                    <div id="maze">
-
-                    </div>
+                    <div id="maze"></div>
 
                 </div>
             </div>
@@ -130,8 +129,14 @@ $title = "Création"
 
         let conf= false;
         let table_array=[];
+        let length_min =4
+        let height_min =4
+        let length_max =10
+        let height_max =10
         function resetLab()
         {
+
+            table_array=[]
             let element =document.querySelector('#maze')
             element.removeChild(element.firstChild)
             conf= false;
@@ -261,11 +266,21 @@ $title = "Création"
 
                 if(table_array[parseInt(target_Id[0])][parseInt(target_Id[1])]>15 && table_array[parseInt(target_Id[0])][parseInt(target_Id[1])]<32)
                 {
-                    table_array[parseInt(target_Id[0])][parseInt(target_Id[1])]=16+parseInt(image_Id)
+                    if(image_Id==='0'){
+                       return
+                    }else{
+                        table_array[parseInt(target_Id[0])][parseInt(target_Id[1])]=16+parseInt(image_Id)
+                    }
+
 
                 }else if (table_array[parseInt(target_Id[0])][parseInt(target_Id[1])]>=32)
                 {
-                    table_array[parseInt(target_Id[0])][parseInt(target_Id[1])]=32+parseInt(image_Id)
+                    if(image_Id==='0'||image_Id==='1'||image_Id==='2'||image_Id==='4'||image_Id==='8'){
+                        return
+                    }else{
+                        table_array[parseInt(target_Id[0])][parseInt(target_Id[1])]=32+parseInt(image_Id)
+                    }
+
                 }
                 else
                 {
@@ -305,7 +320,7 @@ $title = "Création"
             for(let i = 0; i <document.querySelector('#setheight').value;i++)
             {
 
-                for(let j = 0; j <document.querySelector('#setlenght').value;j++)
+                for(let j = 0; j <document.querySelector('#setlength').value;j++)
                 {
                     value+=table_array[i][j]
 
@@ -318,7 +333,7 @@ $title = "Création"
                 table_array[parseInt(cell[0])][parseInt(cell[1])]+=16
                 document.getElementById(id).style.background = "red";
             }
-            if(value==16 && table_array[parseInt(cell[0])][parseInt(cell[1])]!==16){
+            if((value==16 && table_array[parseInt(cell[0])][parseInt(cell[1])]!==16) && ((parseInt(cell[0])===0 || parseInt(cell[0])===table_array.length-1)||(parseInt(cell[1])===0 || parseInt(cell[1])===table_array[0].length-1) )){
                 table_array[parseInt(cell[0])][parseInt(cell[1])]+=32
                 document.getElementById(id).style.background = "blue";
                 conf = true
@@ -338,9 +353,9 @@ $title = "Création"
         }
         function displayTable()
         {
-            let lenght = document.querySelector('#setlenght').value
+            let length = document.querySelector('#setlength').value
             let height = document.querySelector('#setheight').value
-            if (lenght>3 && height>3 )
+            if ((length>length_min-1 && length<=length_max)&& (height>height_min-1 && height<=height_max ))
             {
 
                 let table ="";
@@ -349,10 +364,10 @@ $title = "Création"
                 {
                     table += "<tr >"
                     let row =[]
-                    for(let j = 0; j <lenght;j++)
+                    for(let j = 0; j <length;j++)
                     {
                         table +="<td id='"+i+"_"+j+"' onclick=\"beginAndEnd('"+i+"_"+j+"')\"" +
-                            " ondragover='return dragOver(event)' ondrop='mazeDrop(event) ' class='tuile' ><p>"+i+j+"</p></td>"
+                            " ondragover='return dragOver(event)' ondrop='mazeDrop(event) ' class='tuile' ><img src='asset_graphique/0.png'></td>"
                         row.push(0)
                     }
                     table += "</tr>"
@@ -361,7 +376,7 @@ $title = "Création"
                 const maze = document.createElement('table')
                 maze.classList.add('maze')
                 maze.innerHTML=table;
-                document.querySelector('#lenght').value = lenght
+                document.querySelector('#length').value = length
                 document.querySelector('#height').value = height
 
                 document.querySelector('#maze').append(maze);
@@ -369,8 +384,8 @@ $title = "Création"
 
             }else
             {
-                document.querySelector('#erreur').innerText= "La taille minimal du labyrinthe doit être de 4x4." +
-                    "\n les valeurs que vous avez entrer sont trop petite";
+                document.querySelector('#erreur').innerText= "La taille minimal du labyrinthe doit être de 4x4.\n Sa taille maximal est de 10x10" +
+                    "\n les valeurs que vous avez entrer ne sont pas conforme a une de ses deux normes";
             }
         }
     </script>

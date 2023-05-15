@@ -249,14 +249,24 @@ class LabyrintheController extends Controller
         $formFields = $request->validate([
             // verifie si l'utilisateur existe déjà
             'labyrinthe_code'=>'required',
-            'lenght'=>'required',
+            'length'=>'required',
             'height'=>'required'
 
         ]);
 
         $formFields['users_id']=auth()->user()->id;
 
+
+        $maze_code = $formFields['labyrinthe_code'].substr();
+
+
+
+
+
+
+
         Labyrinthe::create($formFields);
+
 
 
 
