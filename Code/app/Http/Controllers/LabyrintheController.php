@@ -257,7 +257,33 @@ class LabyrintheController extends Controller
         $formFields['users_id']=auth()->user()->id;
 
 
-        $maze_code = $formFields['labyrinthe_code'].substr();
+        //$maze_code = $formFields['labyrinthe_code'].substr();
+        $maze_array= [];
+        for($i=0 ; $i<$formFields['height']; $i++)
+        {
+            for ($j=0 ; $j<$formFields['length']; $j++)
+            {
+                $maze_array[$i][$j] = $this->stringtovalue($formFields['labyrinthe_code'][($i*$formFields['height'])+$j]);
+                if($maze_array[$i][$j]>15 && $maze_array[$i][$j]<32){
+                    $maze_array['start']= [$i,$j];
+                }else if($maze_array[$i][$j]>=32){
+                    $maze_array['finish']= [$i,$j];
+                }
+            }
+
+        }
+
+
+
+
+
+
+
+
+
+        dd($maze_array, $maze_array[$maze_array['start'][0]][$maze_array['start'][1]]&8);
+
+
 
 
 

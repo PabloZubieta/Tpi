@@ -288,6 +288,7 @@ $title = "Création"
                 }
                 let duplicate = document.createElement('img')
                 duplicate.src = "asset_graphique/"+table_array[parseInt(target_Id[0])][parseInt(target_Id[1])]+".png"
+                duplicate.draggable =false
                 e.currentTarget.replaceChild(duplicate, e.currentTarget.childNodes[0]);
                 let value =""
                 for(let i = 0; i <table_array.length;i++)
@@ -367,7 +368,7 @@ $title = "Création"
                     for(let j = 0; j <length;j++)
                     {
                         table +="<td id='"+i+"_"+j+"' onclick=\"beginAndEnd('"+i+"_"+j+"')\"" +
-                            " ondragover='return dragOver(event)' ondrop='mazeDrop(event) ' class='tuile' ><img src='asset_graphique/0.png'></td>"
+                            " ondragover='return dragOver(event)' ondrop='mazeDrop(event) ' draggable='false'  class='tuile' ><img src='asset_graphique/0.png'></td>"
                         row.push(0)
                     }
                     table += "</tr>"
