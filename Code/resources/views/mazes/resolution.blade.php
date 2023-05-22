@@ -6,7 +6,7 @@
  * @version 09.05.2023
  */
 $title = "création";
-$maze=[[47,9],[3,24]];
+
 
 ?>
 @extends('layout')

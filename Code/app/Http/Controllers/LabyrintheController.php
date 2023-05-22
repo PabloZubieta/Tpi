@@ -238,11 +238,22 @@ class LabyrintheController extends Controller
     {
         return view('mazes.creation');
     }
-    //fonction d'affichage de la View resolution
+    //fonction d'affichage de la View resolution avec un labyrinthe aléatoire
     public function escape()
     {
-        return view('mazes.resolution');
+        //creation aleatoire de labyrinthe
+        $maze=[[47,9],[3,24]];
+        return view('mazes.resolution',['maze'=>$maze]);
     }
+    //fonction d'affichage de la View resolution
+    public function escapeThis()
+    {
+        //creation aleatoire de labyrinthe
+        $maze=[[47,9],[3,24]];
+        return view('mazes.resolution',['maze'=>$maze]);
+    }
+
+
     //fonction d'insertion du labrinthe
     public function create(Request $request)
     {
@@ -277,8 +288,8 @@ class LabyrintheController extends Controller
         $maze_position =$maze_array['start'];
         //
         $solve= 2;
-        while ($solve==2)
-        //for ($i = 0; $i < 9; $i++)
+        //while ($solve==2)
+        for ($i = 0; $i < 20; $i++)
         {
             if((($maze_array[$maze_position[0]][$maze_position[1]]&1)&&(($maze_position[0]!=0)&&($maze_array[$maze_position[0]-1][$maze_position[1]]&4)))&&(!($maze_path[$maze_position[0]][$maze_position[1]]&1)))
             {

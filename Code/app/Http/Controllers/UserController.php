@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Labyrinthe;
 use App\Models\User;
+use App\Models\Users_does_labyrinthe;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
@@ -96,7 +98,11 @@ class UserController extends Controller
     //fonction d'affichage de la View historique
     public function history()
     {
-        return view('users.historique');
+
+        $created=Labyrinthe::Where('users_id','=',auth()->user()->id)->get();
+        $done= Users_does_labyrinthe::Where('users_does_labyrinthes.users_id','=',auth()->user()->id)->join('labyrinthes','users_does_labyrinthes.labyrinthes_id',"=" ,'labyrinthes.id')->select('labyrinthes.id','labyrinthes.labyrinthe_code','labyrinthes.length','labyrinthes.height','users_does_labyrinthes.created_at')->get();
+
+        return view('users.historique',['created'=>$created,'done'=>$done]);
     }
 
 }
