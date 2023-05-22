@@ -8,17 +8,13 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     * Creation de la table labyrinthe
+     * création de la table de liason
      */
     public function up(): void
     {
-        Schema::create('labyrinthe', function (Blueprint $table) {
+        Schema::create('users_does_labyrinthes', function (Blueprint $table) {
             $table->id();
-            $table->string('labyrinthe_code',100)->unique();
-            $table->tinyInteger('lenght');
-            $table->tinyInteger('height');
             $table->timestamps();
-
         });
     }
 
@@ -27,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('labyrinthe');
+        Schema::dropIfExists('users_does_labyrinthes');
     }
 };

@@ -9,11 +9,10 @@ class Labyrinthe extends Model
 {
     use HasFactory;
 
-    protected $table = 'labyrinthe';
 
     protected $fillable = [
         'labyrinthe_code',
-        'lenght',
+        'length',
         'height',
         'users_id'
     ];

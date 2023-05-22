@@ -248,15 +248,146 @@ class LabyrintheController extends Controller
     {
         $formFields = $request->validate([
             // verifie si l'utilisateur existe déjà
-            'labyrinthe_code'=>'required',
-            'lenght'=>'required',
-            'height'=>'required'
+            'labyrinthe_code' => 'required',
+            'length' => 'required',
+            'height' => 'required'
 
         ]);
 
-        $formFields['users_id']=auth()->user()->id;
+        $formFields['users_id'] = auth()->user()->id;
+
+
+        //$maze_code = $formFields['labyrinthe_code'].substr();
+        $maze_array = [];
+        $maze_path = [];
+
+        for ($i = 0; $i < $formFields['height']; $i++) {
+            for ($j = 0; $j < $formFields['length']; $j++) {
+                $maze_array[$i][$j] = $this->stringtovalue($formFields['labyrinthe_code'][($i * $formFields['height']) + $j]);
+                $maze_path [$i][$j] = 0;
+                if ($maze_array[$i][$j] > 15 && $maze_array[$i][$j] < 32) {
+                    $maze_array['start'] = [$i, $j];
+                } else if ($maze_array[$i][$j] >= 32) {
+                    $maze_array['finish'] = [$i, $j];
+                }
+            }
+
+        }
+        $last_position= $maze_array['start'];
+        $maze_position =$maze_array['start'];
+        //
+        $solve= 2;
+        while ($solve==2)
+        //for ($i = 0; $i < 9; $i++)
+        {
+            if((($maze_array[$maze_position[0]][$maze_position[1]]&1)&&(($maze_position[0]!=0)&&($maze_array[$maze_position[0]-1][$maze_position[1]]&4)))&&(!($maze_path[$maze_position[0]][$maze_position[1]]&1)))
+            {
+                if($maze_array[$maze_position[0]][$maze_position[1]]==16){
+                    $solve= 0;
+                }
+                $maze_array[$maze_position[0]][$maze_position[1]]-=1;
+                if($maze_array[$maze_position[0]][$maze_position[1]]>$maze_path[$maze_position[0]][$maze_position[1]])
+                {
+                    $last_position = $maze_position;
+
+                }
+                $maze_position[0]--;
+                $maze_path[$maze_position[0]][$maze_position[1]]+=4;
+                if($maze_array[$maze_position[0]][$maze_position[1]]>31){
+                    $solve= 1;
+                }
+
+
+
+
+            }elseif ((($maze_array[$maze_position[0]][$maze_position[1]]&2)&&(($maze_position[1]!=$formFields['length']-1)&&($maze_array[$maze_position[0]][$maze_position[1]+1]&8)))&&(!($maze_path[$maze_position[0]][$maze_position[1]]&2)))
+            {
+                if($maze_array[$maze_position[0]][$maze_position[1]]==16){
+                    $solve= 0;
+                }
+                $maze_array[$maze_position[0]][$maze_position[1]]-=2;
+                if($maze_array[$maze_position[0]][$maze_position[1]]>$maze_path[$maze_position[0]][$maze_position[1]])
+                {
+                    $last_position = $maze_position;
+
+                }
+                $maze_position[1]++;
+                $maze_path[$maze_position[0]][$maze_position[1]]+=8;
+                if($maze_array[$maze_position[0]][$maze_position[1]]>31){
+                    $solve= 1;
+                }
+
+
+
+            }elseif ((($maze_array[$maze_position[0]][$maze_position[1]]&4)&&(($maze_position[0]!=$formFields['height']-1)&&($maze_array[$maze_position[0]+1][$maze_position[1]]&1)))&&(!($maze_path[$maze_position[0]][$maze_position[1]]&4)))
+            {
+                if($maze_array[$maze_position[0]][$maze_position[1]]==16){
+                    $solve= 0;
+                }
+                $maze_array[$maze_position[0]][$maze_position[1]]-=4;
+                if($maze_array[$maze_position[0]][$maze_position[1]]>$maze_path[$maze_position[0]][$maze_position[1]])
+                {
+                    $last_position = $maze_position;
+
+                }
+                $maze_position[0]++;
+                $maze_path[$maze_position[0]][$maze_position[1]]+=1;
+                if($maze_array[$maze_position[0]][$maze_position[1]]>31){
+                    $solve= 1;
+                }
+
+
+            }elseif ((($maze_array[$maze_position[0]][$maze_position[1]]&8)&&(($maze_position[1]!=0)&&($maze_array[$maze_position[0]][$maze_position[1]-1]&2)))&&(!($maze_path[$maze_position[0]][$maze_position[1]]&8)))
+            {
+                if($maze_array[$maze_position[0]][$maze_position[1]]==16){
+                    $solve= 0;
+                }
+                $maze_array[$maze_position[0]][$maze_position[1]]-=8;
+                if($maze_array[$maze_position[0]][$maze_position[1]]>$maze_path[$maze_position[0]][$maze_position[1]])
+                {
+                    $last_position = $maze_position;
+
+                }
+                $maze_position[1]--;
+                $maze_path[$maze_position[0]][$maze_position[1]]+=2;
+
+                if($maze_array[$maze_position[0]][$maze_position[1]]>31){
+                    $solve= 1;
+                }
+
+
+
+
+            }else{
+                $maze_position=$last_position;
+                if($maze_array[$maze_position[0]][$maze_position[1]]==16){
+                    $solve= 0;
+                }
+
+            }
+
+        }
+        dd($maze_array, $maze_path , $maze_position,$last_position,$solve);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         Labyrinthe::create($formFields);
+
 
 
 
