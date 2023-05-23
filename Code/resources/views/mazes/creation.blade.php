@@ -11,6 +11,10 @@ $title = "Création"
 @extends('layout')
 
 @section('content')
+    <script>
+        let conf= false;
+        let table_array=[];
+    </script>
     <div >
         <div class="container col-lg-12 col-md-12 col-sm-12 " >
             <div class="row" >
@@ -20,19 +24,41 @@ $title = "Création"
                         Vous voici dans l'interface de création des labyrinthes. elle vous permet de créer vos propres labyrinthe.
                         Vous pourez les faire valider avant les enregister dans la base de donnée. vous avec prealablement chosis la taille du labyrinthe.
                     </p>
+                    @php
+                        if (isset($orginal_maze))
+                            {
+                    @endphp
+                    <div class="alert alert-danger">
+                        labyrinthe insoluble désolé.
+                    </div>
+                    <script>
+                        conf= true;
+                        table_array=
+                        @php
+                        echo json_encode($orginal_maze)
+                            @endphp
+                    </script>
+
+                    @php
+
+                        }
+
+
+                    @endphp
+
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-12" >
                     <div >
                         <form  method="POST" action="/check">
                             @csrf <!-- juste de la securité  https://laravel.com/docs/5.8/csrf -->
                             <div class="mb-3">
-                                <input type="text"  name="labyrinthe_code" id="labyrinthe_code" value="" hidden>
+                                <input type="text"  name="labyrinthe_code" id="labyrinthe_code" value="{{old('labyrinthe_code')}}" hidden>
                             </div>
                             <div class="mb-3">
-                                <input type="number"  name="length" id="length" value="" hidden>
+                                <input type="number"  name="length" id="length" value="{{old('length')}}" hidden>
                             </div>
                             <div class="mb-3">
-                                <input type="number"  name="height" id="height" value="" hidden>
+                                <input type="number"  name="height" id="height" value="{{old('height')}}" hidden>
                             </div>
                             <div id="submit" >
                                 <button type="submit" name="Valider" class="btn btn-primary col-12 m-3">Valider</button>
@@ -127,8 +153,8 @@ $title = "Création"
 
     <script>
 
-        let conf= false;
-        let table_array=[];
+
+
         let length_min =4
         let height_min =4
         let length_max =10
