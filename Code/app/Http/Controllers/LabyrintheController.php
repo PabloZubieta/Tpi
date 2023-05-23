@@ -269,6 +269,7 @@ class LabyrintheController extends Controller
 
 
         //$maze_code = $formFields['labyrinthe_code'].substr();
+        $orginal_maze =[];
         $maze_array = [];
         $maze_path = [];
 
@@ -276,6 +277,7 @@ class LabyrintheController extends Controller
             for ($j = 0; $j < $formFields['length']; $j++) {
                 $maze_array[$i][$j] = $this->stringtovalue($formFields['labyrinthe_code'][($i * $formFields['height']) + $j]);
                 $maze_path [$i][$j] = 0;
+                $orginal_maze[$i][$j] = $this->stringtovalue($formFields['labyrinthe_code'][($i * $formFields['height']) + $j]);
                 if ($maze_array[$i][$j] > 15 && $maze_array[$i][$j] < 32) {
                     $maze_array['start'] = [$i, $j];
                 } else if ($maze_array[$i][$j] >= 32) {
@@ -284,12 +286,14 @@ class LabyrintheController extends Controller
             }
 
         }
-        $last_position= $maze_array['start'];
+        $last_position= [$maze_array['start']];
         $maze_position =$maze_array['start'];
         //
+
         $solve= 2;
-        //while ($solve==2)
-        for ($i = 0; $i < 20; $i++)
+        $i=0;
+        while ($solve==2)
+        //for ($i = 0; $i < 20; $i++)
         {
             if((($maze_array[$maze_position[0]][$maze_position[1]]&1)&&(($maze_position[0]!=0)&&($maze_array[$maze_position[0]-1][$maze_position[1]]&4)))&&(!($maze_path[$maze_position[0]][$maze_position[1]]&1)))
             {
@@ -299,19 +303,25 @@ class LabyrintheController extends Controller
                 $maze_array[$maze_position[0]][$maze_position[1]]-=1;
                 if($maze_array[$maze_position[0]][$maze_position[1]]>$maze_path[$maze_position[0]][$maze_position[1]])
                 {
-                    $last_position = $maze_position;
+                    array_push( $last_position,$maze_position);
 
                 }
                 $maze_position[0]--;
+                if(($maze_path[$maze_position[0]][$maze_position[1]]>0)||(($maze_array[$maze_position[0]][$maze_position[1]]>16)&&($maze_array[$maze_position[0]][$maze_position[1]]<31)))
+                {
+                    $maze_array[$maze_position[0]][$maze_position[1]]-=4;
+                }
                 $maze_path[$maze_position[0]][$maze_position[1]]+=4;
                 if($maze_array[$maze_position[0]][$maze_position[1]]>31){
                     $solve= 1;
+
                 }
 
 
 
 
-            }elseif ((($maze_array[$maze_position[0]][$maze_position[1]]&2)&&(($maze_position[1]!=$formFields['length']-1)&&($maze_array[$maze_position[0]][$maze_position[1]+1]&8)))&&(!($maze_path[$maze_position[0]][$maze_position[1]]&2)))
+            }
+            elseif ((($maze_array[$maze_position[0]][$maze_position[1]]&2)&&(($maze_position[1]!=$formFields['length']-1)&&($maze_array[$maze_position[0]][$maze_position[1]+1]&8)))&&(!($maze_path[$maze_position[0]][$maze_position[1]]&2)))
             {
                 if($maze_array[$maze_position[0]][$maze_position[1]]==16){
                     $solve= 0;
@@ -319,18 +329,24 @@ class LabyrintheController extends Controller
                 $maze_array[$maze_position[0]][$maze_position[1]]-=2;
                 if($maze_array[$maze_position[0]][$maze_position[1]]>$maze_path[$maze_position[0]][$maze_position[1]])
                 {
-                    $last_position = $maze_position;
+                    array_push( $last_position,$maze_position);
 
                 }
                 $maze_position[1]++;
+                if(($maze_path[$maze_position[0]][$maze_position[1]]>0)||(($maze_array[$maze_position[0]][$maze_position[1]]>16)&&($maze_array[$maze_position[0]][$maze_position[1]]<31)))
+                {
+                    $maze_array[$maze_position[0]][$maze_position[1]]-=8;
+                }
                 $maze_path[$maze_position[0]][$maze_position[1]]+=8;
                 if($maze_array[$maze_position[0]][$maze_position[1]]>31){
                     $solve= 1;
+
                 }
 
 
 
-            }elseif ((($maze_array[$maze_position[0]][$maze_position[1]]&4)&&(($maze_position[0]!=$formFields['height']-1)&&($maze_array[$maze_position[0]+1][$maze_position[1]]&1)))&&(!($maze_path[$maze_position[0]][$maze_position[1]]&4)))
+            }
+            elseif ((($maze_array[$maze_position[0]][$maze_position[1]]&4)&&(($maze_position[0]!=$formFields['height']-1)&&($maze_array[$maze_position[0]+1][$maze_position[1]]&1)))&&(!($maze_path[$maze_position[0]][$maze_position[1]]&4)))
             {
                 if($maze_array[$maze_position[0]][$maze_position[1]]==16){
                     $solve= 0;
@@ -338,47 +354,82 @@ class LabyrintheController extends Controller
                 $maze_array[$maze_position[0]][$maze_position[1]]-=4;
                 if($maze_array[$maze_position[0]][$maze_position[1]]>$maze_path[$maze_position[0]][$maze_position[1]])
                 {
-                    $last_position = $maze_position;
+                    array_push( $last_position,$maze_position);
 
                 }
                 $maze_position[0]++;
+                if(($maze_path[$maze_position[0]][$maze_position[1]]>0)||(($maze_array[$maze_position[0]][$maze_position[1]]>16)&&($maze_array[$maze_position[0]][$maze_position[1]]<31)))
+                {
+                    $maze_array[$maze_position[0]][$maze_position[1]]-=1;
+                }
                 $maze_path[$maze_position[0]][$maze_position[1]]+=1;
                 if($maze_array[$maze_position[0]][$maze_position[1]]>31){
                     $solve= 1;
+
                 }
 
 
-            }elseif ((($maze_array[$maze_position[0]][$maze_position[1]]&8)&&(($maze_position[1]!=0)&&($maze_array[$maze_position[0]][$maze_position[1]-1]&2)))&&(!($maze_path[$maze_position[0]][$maze_position[1]]&8)))
+            }
+            elseif ((($maze_array[$maze_position[0]][$maze_position[1]]&8)&&(($maze_position[1]!=0)&&($maze_array[$maze_position[0]][$maze_position[1]-1]&2)))&&(!($maze_path[$maze_position[0]][$maze_position[1]]&8)))
             {
+
                 if($maze_array[$maze_position[0]][$maze_position[1]]==16){
                     $solve= 0;
                 }
                 $maze_array[$maze_position[0]][$maze_position[1]]-=8;
                 if($maze_array[$maze_position[0]][$maze_position[1]]>$maze_path[$maze_position[0]][$maze_position[1]])
                 {
-                    $last_position = $maze_position;
+                    array_push( $last_position,$maze_position);
 
                 }
                 $maze_position[1]--;
+                if(($maze_path[$maze_position[0]][$maze_position[1]]>0)||(($maze_array[$maze_position[0]][$maze_position[1]]>16)&&($maze_array[$maze_position[0]][$maze_position[1]]<31)))
+                {
+                    $maze_array[$maze_position[0]][$maze_position[1]]-=2;
+                }
                 $maze_path[$maze_position[0]][$maze_position[1]]+=2;
 
                 if($maze_array[$maze_position[0]][$maze_position[1]]>31){
                     $solve= 1;
+
                 }
 
 
 
 
-            }else{
-                $maze_position=$last_position;
+            }
+            else{
+
+
+
+                $maze_position=$last_position[sizeof($last_position)-1];
+                array_pop($last_position);
                 if($maze_array[$maze_position[0]][$maze_position[1]]==16){
                     $solve= 0;
                 }
 
             }
-
+            $i++;
+            if ($i==120){
+                $solve= 0;
+            }
         }
-        dd($maze_array, $maze_path , $maze_position,$last_position,$solve);
+       if($solve==1) {
+           $lab=Labyrinthe::firstWhere('labyrinthe_code',$formFields['labyrinthe_code']);
+           if (!$lab){
+               Labyrinthe::create($formFields);
+           }
+
+
+
+
+
+           return view('mazes.resolution',['maze'=>$orginal_maze]);
+
+       }
+       else {
+           return back()->withInput($orginal_maze);
+       }
 
 
 
@@ -397,7 +448,7 @@ class LabyrintheController extends Controller
 
 
 
-        Labyrinthe::create($formFields);
+
 
 
 
