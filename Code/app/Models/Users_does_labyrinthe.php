@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Users_does_labyrinthe extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'labyrinthes_id',
+        'users_id'
+    ];
 }

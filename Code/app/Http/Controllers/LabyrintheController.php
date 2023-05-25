@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Labyrinthe;
+use App\Models\Users_does_labyrinthe;
 use Illuminate\Http\Request;
 
 class LabyrintheController extends Controller
@@ -239,18 +240,245 @@ class LabyrintheController extends Controller
         return view('mazes.creation');
     }
     //fonction d'affichage de la View resolution avec un labyrinthe aléatoire
-    public function escape()
+
+    /**
+     * @throws \Exception
+     */
+    public function escape(Request $request)
     {
-        //creation aleatoire de labyrinthe
-        $maze=[[47,9],[3,24]];
-        return view('mazes.resolution',['maze'=>$maze]);
+
+        $formFields = $request->validate([
+            // verifie si l'utilisateur existe déjà
+            'height'=>'lte:10|gte:4',
+            'length'=>'lte:10|gte:4'
+        ]);
+
+
+        $maze_value = [];
+        $maze_boolean = [];
+        $maze_array = [];
+        $value =0;
+        for ($i = 0; $i < $formFields['height']; $i++) {
+            for ($j = 0; $j < $formFields['length']; $j++) {
+                $maze_value[$i][$j] = $value;
+                $maze_boolean[$i][$j] =false;
+                $maze_array[$i][$j] =0;
+                $value++;
+
+
+            }
+
+        }
+
+        $random_start= random_int(0,$value-1);
+        $maze_boolean[intdiv($random_start, $formFields['height'])][$random_start%$formFields['length']] =true;
+        $complete = false;
+
+        while (!$complete)
+           //for($k = 0; $k < 40; $k++)
+        {
+            $random_try= random_int(0,$value-1);
+            $posi1=intdiv($random_try, $formFields['length']);
+            $posi2=$random_try%$formFields['length'];
+            $random_position= random_int(1,4);
+            switch ($random_position)
+            {
+                case 1:
+                    if((!($maze_array[$posi1][$posi2]&1))&&($posi1!=0))
+                    {
+                        if($maze_value[$posi1][$posi2]!=$maze_value[$posi1-1][$posi2]){
+                            $maze_array[$posi1][$posi2]+=1;
+                            $maze_array[$posi1-1][$posi2]+=4;
+                            $val_remplace =$maze_value[$posi1-1][$posi2];
+                            $maze_boolean[$posi1][$posi2]=$maze_boolean[$posi1][$posi2]||$maze_boolean[$posi1-1][$posi2];
+                            $maze_boolean[$posi1-1][$posi2]=$maze_boolean[$posi1][$posi2]||$maze_boolean[$posi1-1][$posi2];
+                            for ($i = 0; $i < $formFields['height']; $i++) {
+                                for ($j = 0; $j < $formFields['length']; $j++) {
+                                    if($maze_value[$i][$j]==$val_remplace)
+                                    {
+                                        $maze_value[$i][$j]=$maze_value[$posi1][$posi2];
+                                        $maze_boolean[$i][$j]=$maze_boolean[$posi1][$posi2]||$maze_boolean[$i][$j];
+                                    }
+
+                                }
+                            }
+                        }
+
+                    }
+                    break;
+                case 2:
+                    if((!($maze_array[$posi1][$posi2]&2))&&($posi2!=$formFields['length']-1))
+                    {
+                        if($maze_value[$posi1][$posi2]!=$maze_value[$posi1][$posi2+1]){
+                            $maze_array[$posi1][$posi2]+=2;
+                            $maze_array[$posi1][$posi2+1]+=8;
+                            $val_remplace =$maze_value[$posi1][$posi2+1];
+                            $maze_boolean[$posi1][$posi2]=$maze_boolean[$posi1][$posi2]||$maze_boolean[$posi1][$posi2+1];
+                            $maze_boolean[$posi1][$posi2+1]=$maze_boolean[$posi1][$posi2]||$maze_boolean[$posi1][$posi2+1];
+                            for ($i = 0; $i < $formFields['height']; $i++) {
+                                for ($j = 0; $j < $formFields['length']; $j++) {
+                                    if($maze_value[$i][$j]==$val_remplace)
+                                    {
+                                        $maze_value[$i][$j]=$maze_value[$posi1][$posi2];
+                                        $maze_boolean[$i][$j]=$maze_boolean[$posi1][$posi2]||$maze_boolean[$i][$j];
+                                    }
+
+                                }
+                            }
+                        }
+
+                    }
+                    break;
+                case 3:
+                    if((!($maze_array[$posi1][$posi2]&4))&&($posi1!=$formFields['height']-1))
+                    {
+                        if($maze_value[$posi1][$posi2]!=$maze_value[$posi1+1][$posi2]){
+                            $maze_array[$posi1][$posi2]+=4;
+                            $maze_array[$posi1+1][$posi2]+=1;
+                            $val_remplace =$maze_value[$posi1+1][$posi2];
+                            $maze_boolean[$posi1][$posi2]=$maze_boolean[$posi1][$posi2]||$maze_boolean[$posi1+1][$posi2];
+                            $maze_boolean[$posi1+1][$posi2]=$maze_boolean[$posi1][$posi2]||$maze_boolean[$posi1+1][$posi2];
+                            for ($i = 0; $i < $formFields['height']; $i++) {
+                                for ($j = 0; $j < $formFields['length']; $j++) {
+                                    if($maze_value[$i][$j]==$val_remplace)
+                                    {
+                                        $maze_value[$i][$j]=$maze_value[$posi1][$posi2];
+                                        $maze_boolean[$i][$j]=$maze_boolean[$posi1][$posi2]||$maze_boolean[$i][$j];
+                                    }
+
+                                }
+                            }
+                        }
+
+                    }
+
+                    break;
+                case 4:
+                    if((!($maze_array[$posi1][$posi2]&8))&&($posi2!=0))
+                    {
+                        if($maze_value[$posi1][$posi2]!=$maze_value[$posi1][$posi2-1]){
+                            $maze_array[$posi1][$posi2]+=8;
+                            $maze_array[$posi1][$posi2-1]+=2;
+                            $val_remplace =$maze_value[$posi1][$posi2-1];
+                            $maze_boolean[$posi1][$posi2]=$maze_boolean[$posi1][$posi2]||$maze_boolean[$posi1][$posi2-1];
+                            $maze_boolean[$posi1][$posi2-1]=$maze_boolean[$posi1][$posi2]||$maze_boolean[$posi1][$posi2-1];
+                            for ($i = 0; $i < $formFields['height']; $i++) {
+                                for ($j = 0; $j < $formFields['length']; $j++) {
+                                    if($maze_value[$i][$j]==$val_remplace)
+                                    {
+                                        $maze_value[$i][$j]=$maze_value[$posi1][$posi2];
+                                        $maze_boolean[$i][$j]=$maze_boolean[$posi1][$posi2]||$maze_boolean[$i][$j];
+                                    }
+
+                                }
+                            }
+                        }
+
+                    }
+                    break;
+            }
+            $val_remplace2=$maze_value[0][0];
+
+            $complete=true;
+            for ($i = 0; $i < $formFields['height']; $i++) {
+                for ($j = 0; $j < $formFields['length']; $j++) {
+                    if($maze_value[$i][$j]!=$val_remplace2)
+                    {
+                        $complete=false;
+                    }
+
+                }
+            }
+
+
+
+
+
+        }
+
+        $exit=2*$formFields['height']+2*$formFields['length'];
+        $random_end= random_int(1,$exit);
+        $end_position=[];
+        if($random_end<$formFields['length']+1)
+        {
+            $maze_array[0][$random_end-1]+=33;
+            $end_position=[0,$random_end-1];
+        }
+        elseif ($random_end>$formFields['length']&&($random_end<$formFields['length']+$formFields['height']+1))
+        {
+            $maze_array[$random_end-$formFields['length']-1][$formFields['length']-1]+=34;
+            $end_position=[$random_end-$formFields['length']-1,$formFields['length']-1];
+        }
+        elseif (($random_end>$formFields['length']+$formFields['height'])&&($random_end<2*$formFields['length']+$formFields['height']+1))
+        {
+            $maze_array[$formFields['height']-1][$random_end-$formFields['length']-$formFields['height']-1]+=36;
+            $end_position=[$formFields['height']-1,$random_end-$formFields['length']-$formFields['height']-1];
+        }
+        elseif ($random_end>2*$formFields['length']+$formFields['height'])
+        {
+            $maze_array[$random_end-2*$formFields['length']-$formFields['height']-1][0]+=40;
+            $end_position=[$random_end-2*$formFields['length']-$formFields['height']-1,0];
+        }
+        $posi1=0;
+        $posi2=0;
+        do{
+            $random_try= random_int(0,$value-1);
+            $posi1=intdiv($random_try, $formFields['length']);
+            $posi2=$random_try%$formFields['length'];
+        }while($end_position==[$posi1,$posi2]);
+        $maze_array[$posi1][$posi2] +=16;
+        $formFields['labyrinthe_code']="";
+        for ($i = 0; $i < $formFields['height']; $i++) {
+            for ($j = 0; $j < $formFields['length']; $j++) {
+                $formFields['labyrinthe_code'] .= $this->valuetostring($maze_array[$i][$j]);
+
+            }
+        }
+        $lab=Labyrinthe::firstWhere('labyrinthe_code',$formFields['labyrinthe_code']);
+        $id=1;
+        if (!$lab){
+            $formFields['created_at'] = date('Y-m-d H:i:s',strtotime('now'));
+
+            $id =Labyrinthe::insertGetId($formFields);
+        }
+        else
+        {
+         $id=$lab->id  ;
+        }
+        Users_does_labyrinthe::create(['users_id'=>auth()->user()->id,'labyrinthes_id'=>$id]);
+
+
+
+
+
+
+
+        return view('mazes.resolution',['maze'=>$maze_array]);
+
+
+
+
+
     }
     //fonction d'affichage de la View resolution
-    public function escapeThis()
+    public function escapeThis($id)
     {
-        //creation aleatoire de labyrinthe
-        $maze=[[47,9],[3,24]];
-        return view('mazes.resolution',['maze'=>$maze]);
+
+        $lab =Labyrinthe::Where('id','=',$id)->get();
+
+        $maze_array=[];
+        for ($i = 0; $i < $lab[0]->height; $i++) {
+            for ($j = 0; $j < $lab[0]->length; $j++) {
+                $maze_array[$i][$j] = $this->stringtovalue($lab[0]->labyrinthe_code[($i * $lab[0]->height) + $j]);
+
+            }
+
+        }
+
+        $back="../";
+
+
+        return view('mazes.resolution',['maze'=>$maze_array,'back'=>$back]);
     }
 
 
@@ -416,9 +644,17 @@ class LabyrintheController extends Controller
         }
        if($solve==1) {
            $lab=Labyrinthe::firstWhere('labyrinthe_code',$formFields['labyrinthe_code']);
+           $id=1;
            if (!$lab){
-               Labyrinthe::create($formFields);
+               $formFields['created_at'] = date('Y-m-d H:i:s',strtotime('now'));
+              $id =Labyrinthe::insertGetId($formFields);
            }
+           else
+           {
+               $id=$lab->id  ;
+           }
+           Users_does_labyrinthe::create(['users_id'=>auth()->user()->id,'labyrinthes_id'=>$id]);
+
 
 
 
@@ -428,32 +664,9 @@ class LabyrintheController extends Controller
 
        }
        else {
-           return back()->withInput($orginal_maze);
+
+           return back()->with('message', $orginal_maze);
        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         return redirect('/');

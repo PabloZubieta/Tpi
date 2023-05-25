@@ -31,7 +31,9 @@ route::post('/log',[UserController::class,'log']);
 
 route::get('/creation',[LabyrintheController::class,'editor'])->middleware(Authenticate::class);
 
-route::get('/resolution',[LabyrintheController::class,'escape'])->middleware(Authenticate::class);
+route::post('/resolution',[LabyrintheController::class,'escape'])->middleware(Authenticate::class);
+
+route::get('/resolution/{id}',[LabyrintheController::class,'escapeThis',])->middleware(Authenticate::class);
 
 route::get('/historique',[UserController::class,'history'])->middleware(Authenticate::class);
 

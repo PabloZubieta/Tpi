@@ -19,32 +19,28 @@ $title = "Création"
         <div class="container col-lg-12 col-md-12 col-sm-12 " >
             <div class="row" >
                 <div class="col-lg-9 col-md-9 col-sm-12">
-                    <h4>Les Explications</h4>
+                    <h4 class="d-flex justify-content-center">Les Explications</h4>
                     <p>
-                        Vous voici dans l'interface de création des labyrinthes. elle vous permet de créer vos propres labyrinthe.
-                        Vous pourez les faire valider avant les enregister dans la base de donnée. vous avec prealablement chosis la taille du labyrinthe.
+                        Vous voici dans l'interface de création. Elle vous permet de créer vos propres labyrinthes.
+                        Pour confectionner votre labyrinthe, dans un premier temps, vous devrez entrer les dimensions désirées dans les champs correspondants. Ce qui générera votre grille.
+                        <br>
+                        Dans un deuxième temps choisirez le point de départ de votre labyrinthe en cliquant sur une des cases de votre grille. Elle sera surlignée de rouge et point d’arrivée. (! Attention le point d’arrivée doit se trouver en bordure du labyrinthe : sinon il vous serait impossible de vous enfuir)
+                        <br>
+                        Et voilà laisser libre cours à votre imagination, et inventez de machiavéliques dédales aux contours sinistres et inquiétants.
+                        En Drag-and-dropant les tuiles dans votre grille.
+                        Il ne vous reste plus qu’à valider votre labyrinthe.
                     </p>
-                    @php
-                        if (isset($orginal_maze))
-                            {
-                    @endphp
-                    <div class="alert alert-danger">
-                        labyrinthe insoluble désolé.
-                    </div>
-                    <script>
-                        conf= true;
-                        table_array=
-                        @php
-                        echo json_encode($orginal_maze)
-                            @endphp
-                    </script>
-
-                    @php
-
-                        }
+                    @if (Session::has('message'))
+                        <div class="alert alert-danger">
+                            Votre labyrinthe est insoluble, désolé.
+                            Ressayer d'en créer un.
+                        </div>
+                        <script>
 
 
-                    @endphp
+                        </script>
+                    @endif
+
 
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-12" >
@@ -74,7 +70,7 @@ $title = "Création"
             <div class="row" >
                 <div class="col-lg-4 col-md-12 col-sm-12">
 
-                    <h4>Les Tuiles</h4>
+                    <h4 class="d-flex justify-content-center">Les Tuiles</h4>
                     <button class="btn btn-outline-primary"  onclick="hideExemple('#autre')">
                         Croix et autre
                     </button>
@@ -115,7 +111,7 @@ $title = "Création"
 
                 </div>
                 <div class="col-lg-8 col-md-12 col-sm-12" >
-                    <h4>Le Labyrinthe</h4>
+                    <h4 class="d-flex justify-content-center">Le Labyrinthe</h4>
                     <div id="config">
                         <div class="row">
                             <div class="col-8 row">
@@ -141,7 +137,7 @@ $title = "Création"
 
                         </p>
                     </div>
-                    <div id="maze"></div>
+                    <div class="d-flex justify-content-center" id="maze"></div>
 
                 </div>
             </div>

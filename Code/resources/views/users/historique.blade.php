@@ -50,8 +50,14 @@ $title = "Historique";
                                 </tr>
                             @else
                             @foreach($done as $labyrinthe)
-                                <tr>
-                                    <td>{{$labyrinthe->labyrinthe_code}}
+                                <tr onclick="doneLink({{$labyrinthe->id}})">
+                                    <td>@if(strlen($labyrinthe->labyrinthe_code)>50)
+                                            {{substr($labyrinthe->labyrinthe_code,0,50)}}<br>
+                                            {{substr($labyrinthe->labyrinthe_code,50)}}
+                                        @else
+                                            {{$labyrinthe->labyrinthe_code}}
+                                        @endif
+
                                     </td>
                                     <td>{{$labyrinthe->created_at}}
                                     </td>
@@ -80,8 +86,14 @@ $title = "Historique";
                                 </tr>
                             @else
                                 @foreach($created as $labyrinthe)
-                                    <tr>
-                                        <td>{{$labyrinthe->labyrinthe_code}}
+                                    <tr onclick="createLink({{$labyrinthe->id}})">
+                                        <td>@if(strlen($labyrinthe->labyrinthe_code)>50)
+                                                {{substr($labyrinthe->labyrinthe_code,0,50)}}<br>
+                                                {{substr($labyrinthe->labyrinthe_code,50)}}
+                                            @else
+                                                {{$labyrinthe->labyrinthe_code}}
+                                            @endif
+
                                         </td>
                                         <td>{{$labyrinthe->created_at}}
                                         </td>
@@ -103,4 +115,12 @@ $title = "Historique";
 
 
     </div>
+    <script>
+        function createLink(id){
+            location.href = "/resolution/"+id
+        }
+        function doneLink(id){
+            location.href = "/resolution/"+id
+        }
+    </script>
 @endsection

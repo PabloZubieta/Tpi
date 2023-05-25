@@ -6,7 +6,11 @@
  * @version 09.05.2023
  */
 $title = "création";
-
+$path="";
+if(isset($back))
+{
+   $path= $back;
+}
 
 ?>
 @extends('layout')
@@ -58,12 +62,12 @@ $title = "création";
         <div class="container col-lg-12 col-md-12 col-sm-12 " >
             <div class="row" >
                 <div class="col-lg-8 col-md-12 col-sm-12">
-                    <h4>Le Labyrinthe</h4>
-                    <table id="maze">
+                    <h4 class="d-flex justify-content-center">Le Labyrinthe</h4>
+                    <table class="d-flex justify-content-center" id="maze">
                         @for($i= 0; $i<sizeof($maze); $i++)
                             <tr>
                                 @for($j= 0; $j<sizeof($maze[0]); $j++)
-                                    <td><img id="{{$i}}_{{$j}}" src="asset_graphique/{{$maze[$i][$j]}}.png"></td>
+                                    <td><img id="{{$i}}_{{$j}}" src="{{$path}}asset_graphique/{{$maze[$i][$j]}}.png"></td>
                                 @endfor
                             </tr>
                         @endfor
@@ -75,10 +79,13 @@ $title = "création";
                 </div>
                 <div class="col-lg-4 col-md-12 col-sm-12" >
                     <div>
-                        <h4>Les Explications</h4>
+                        <h4 class="d-flex justify-content-center">Les Explications</h4>
                         <p>
-                            Vous voici dans l'interface de resolution des labyrinthes. elle vous permet de resoudre vos propres labyrinthe ou des labyrinthes génerer aléatoirement.
+                            Vous voici dans l'interface de résolution des labyrinthes. Elle vous permet de résoudre vos propres labyrinthe ou des labyrinthes générer aléatoirement.
                             Vous avec préalablement choisis la taille du labyrinthe.
+                            Les flèches directionnelles ci-dessous vous permet de déplacer dans le labyrinthe (Spoiler je n’ai pas eu temps d’implémenter cette fonctionnalité)
+                            Arrivez-vous à vous enfuir de ce labyrinthe.
+
                         </p>
                     </div>
                     <div >
