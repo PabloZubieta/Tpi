@@ -469,7 +469,7 @@ class LabyrintheController extends Controller
         $maze_array=[];
         for ($i = 0; $i < $lab[0]->height; $i++) {
             for ($j = 0; $j < $lab[0]->length; $j++) {
-                $maze_array[$i][$j] = $this->stringtovalue($lab[0]->labyrinthe_code[($i * $lab[0]->height) + $j]);
+                $maze_array[$i][$j] = $this->stringtovalue($lab[0]->labyrinthe_code[($i * $lab[0]->length) + $j]);
 
             }
 
