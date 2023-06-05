@@ -520,111 +520,131 @@ class LabyrintheController extends Controller
 
         $solve= 2;
         $i=0;
-        while ($solve==2)
-        //for ($i = 0; $i < 20; $i++)
-        {
-            if((($maze_array[$maze_position[0]][$maze_position[1]]&1)&&(($maze_position[0]!=0)&&($maze_array[$maze_position[0]-1][$maze_position[1]]&4)))&&(!($maze_path[$maze_position[0]][$maze_position[1]]&1)))
-            {
-                if($maze_array[$maze_position[0]][$maze_position[1]]==16){
-                    $solve= 0;
-                }
-                $maze_array[$maze_position[0]][$maze_position[1]]-=1;
-                if($maze_array[$maze_position[0]][$maze_position[1]]>$maze_path[$maze_position[0]][$maze_position[1]])
-                {
-                    array_push( $last_position,$maze_position);
-
-                }
-                $maze_position[0]--;
-                if(($maze_path[$maze_position[0]][$maze_position[1]]>0)||(($maze_array[$maze_position[0]][$maze_position[1]]>16)&&($maze_array[$maze_position[0]][$maze_position[1]]<31)))
+        /*if(($maze_path[$maze_position[0]][$maze_position[1]]>0)||(($maze_array[$maze_position[0]][$maze_position[1]]>16)&&($maze_array[$maze_position[0]][$maze_position[1]]<31)))
                 {
                     $maze_array[$maze_position[0]][$maze_position[1]]-=4;
                 }
-                $maze_path[$maze_position[0]][$maze_position[1]]+=4;
-                if($maze_array[$maze_position[0]][$maze_position[1]]>31){
-                    $solve= 1;
-
-                }
-
-
-
-
-            }
-            elseif ((($maze_array[$maze_position[0]][$maze_position[1]]&2)&&(($maze_position[1]!=$formFields['length']-1)&&($maze_array[$maze_position[0]][$maze_position[1]+1]&8)))&&(!($maze_path[$maze_position[0]][$maze_position[1]]&2)))
-            {
-                if($maze_array[$maze_position[0]][$maze_position[1]]==16){
-                    $solve= 0;
-                }
-                $maze_array[$maze_position[0]][$maze_position[1]]-=2;
-                if($maze_array[$maze_position[0]][$maze_position[1]]>$maze_path[$maze_position[0]][$maze_position[1]])
-                {
-                    array_push( $last_position,$maze_position);
-
-                }
-                $maze_position[1]++;
                 if(($maze_path[$maze_position[0]][$maze_position[1]]>0)||(($maze_array[$maze_position[0]][$maze_position[1]]>16)&&($maze_array[$maze_position[0]][$maze_position[1]]<31)))
                 {
                     $maze_array[$maze_position[0]][$maze_position[1]]-=8;
                 }
-                $maze_path[$maze_position[0]][$maze_position[1]]+=8;
-                if($maze_array[$maze_position[0]][$maze_position[1]]>31){
-                    $solve= 1;
-
-                }
-
-
-
-            }
-            elseif ((($maze_array[$maze_position[0]][$maze_position[1]]&4)&&(($maze_position[0]!=$formFields['height']-1)&&($maze_array[$maze_position[0]+1][$maze_position[1]]&1)))&&(!($maze_path[$maze_position[0]][$maze_position[1]]&4)))
-            {
-                if($maze_array[$maze_position[0]][$maze_position[1]]==16){
-                    $solve= 0;
-                }
-                $maze_array[$maze_position[0]][$maze_position[1]]-=4;
-                if($maze_array[$maze_position[0]][$maze_position[1]]>$maze_path[$maze_position[0]][$maze_position[1]])
-                {
-                    array_push( $last_position,$maze_position);
-
-                }
-                $maze_position[0]++;
                 if(($maze_path[$maze_position[0]][$maze_position[1]]>0)||(($maze_array[$maze_position[0]][$maze_position[1]]>16)&&($maze_array[$maze_position[0]][$maze_position[1]]<31)))
                 {
                     $maze_array[$maze_position[0]][$maze_position[1]]-=1;
                 }
-                $maze_path[$maze_position[0]][$maze_position[1]]+=1;
-                if($maze_array[$maze_position[0]][$maze_position[1]]>31){
-                    $solve= 1;
-
-                }
-
-
-            }
-            elseif ((($maze_array[$maze_position[0]][$maze_position[1]]&8)&&(($maze_position[1]!=0)&&($maze_array[$maze_position[0]][$maze_position[1]-1]&2)))&&(!($maze_path[$maze_position[0]][$maze_position[1]]&8)))
-            {
-
-                if($maze_array[$maze_position[0]][$maze_position[1]]==16){
-                    $solve= 0;
-                }
-                $maze_array[$maze_position[0]][$maze_position[1]]-=8;
-                if($maze_array[$maze_position[0]][$maze_position[1]]>$maze_path[$maze_position[0]][$maze_position[1]])
-                {
-                    array_push( $last_position,$maze_position);
-
-                }
-                $maze_position[1]--;
                 if(($maze_path[$maze_position[0]][$maze_position[1]]>0)||(($maze_array[$maze_position[0]][$maze_position[1]]>16)&&($maze_array[$maze_position[0]][$maze_position[1]]<31)))
                 {
                     $maze_array[$maze_position[0]][$maze_position[1]]-=2;
                 }
-                $maze_path[$maze_position[0]][$maze_position[1]]+=2;
 
-                if($maze_array[$maze_position[0]][$maze_position[1]]>31){
-                    $solve= 1;
+                */
+        while ($solve==2)
+        //for ($i = 0; $i < 20; $i++)
+        {
+            if($maze_array[$maze_position[0]][$maze_position[1]]&1)
+            {
+
+                $maze_array[$maze_position[0]][$maze_position[1]]-=1;
+                if(($maze_position[0]!=0)||($maze_path[$maze_position[0]][$maze_position[1]]&1))
+                {
 
                 }
+                else
+                {
+                    if ($maze_array[$maze_position[0]-1][$maze_position[1]]&4)
+                    {
+                        if($maze_array[$maze_position[0]][$maze_position[1]]>$maze_path[$maze_position[0]][$maze_position[1]])
+                        {
+                            array_push( $last_position,$maze_position);
+
+                        }
+                        $maze_position[0]--;
+                        $maze_path[$maze_position[0]][$maze_position[1]]+=4;
+                        if($maze_array[$maze_position[0]][$maze_position[1]]>31){
+                            $solve= 1;
+
+                        }
+                    }
+                }
+
+            }
+            elseif ($maze_array[$maze_position[0]][$maze_position[1]]&2)
+            {
+
+                $maze_array[$maze_position[0]][$maze_position[1]]-=2;
+                if(($maze_position[1]!=$formFields['length']-1)||($maze_path[$maze_position[0]][$maze_position[1]]&2))
+                {
+
+                }
+                else
+                {
+                    if($maze_array[$maze_position[0]][$maze_position[1]+1]&8)
+                    {
+                        if($maze_array[$maze_position[0]][$maze_position[1]]>$maze_path[$maze_position[0]][$maze_position[1]])
+                        {
+                            array_push( $last_position,$maze_position);
+                        }
+                        $maze_position[1]++;
+                        $maze_path[$maze_position[0]][$maze_position[1]]+=8;
+                        if($maze_array[$maze_position[0]][$maze_position[1]]>31){
+                            $solve= 1;
+
+                        }
+                    }
+                }
+            }
+            elseif ($maze_array[$maze_position[0]][$maze_position[1]]&4)
+            {
+
+                $maze_array[$maze_position[0]][$maze_position[1]]-=4;
+                if (($maze_position[0]!=$formFields['height']-1)||($maze_path[$maze_position[0]][$maze_position[1]]&4))
+                {
+
+                }
+                else
+                {
+                    if($maze_array[$maze_position[0]+1][$maze_position[1]]&1)
+                    {
+                        if($maze_array[$maze_position[0]][$maze_position[1]]>$maze_path[$maze_position[0]][$maze_position[1]])
+                        {
+                            array_push( $last_position,$maze_position);
+                        }
+                        $maze_position[0]++;
+                        $maze_path[$maze_position[0]][$maze_position[1]]+=1;
+                        if($maze_array[$maze_position[0]][$maze_position[1]]>31){
+                            $solve= 1;
+
+                        }
+                    }
+                }
+            }
+            elseif ((($maze_array[$maze_position[0]][$maze_position[1]]&8)))
+            {
 
 
+                $maze_array[$maze_position[0]][$maze_position[1]]-=8;
+                if (($maze_position[1]!=0)||($maze_path[$maze_position[0]][$maze_position[1]]&8))
+                {
 
+                }
+                else
+                {
+                    if(($maze_array[$maze_position[0]][$maze_position[1]-1]&2))
+                    {
+                        if($maze_array[$maze_position[0]][$maze_position[1]]>$maze_path[$maze_position[0]][$maze_position[1]])
+                        {
+                            array_push( $last_position,$maze_position);
 
+                        }
+                        $maze_position[1]--;
+                        $maze_path[$maze_position[0]][$maze_position[1]]+=2;
+
+                        if($maze_array[$maze_position[0]][$maze_position[1]]>31){
+                            $solve= 1;
+
+                        }
+                    }
+                }
             }
             else{
 
