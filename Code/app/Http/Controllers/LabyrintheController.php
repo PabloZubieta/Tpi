@@ -229,10 +229,10 @@ class LabyrintheController extends Controller
 
     }
 
-
-
-
-
+    public function interface()
+    {
+        return view('mazes.interface');
+    }
     //
     //fonction d'affichage de la View création
     public function editor()
@@ -539,13 +539,13 @@ class LabyrintheController extends Controller
 
                 */
         while ($solve==2)
-        //for ($i = 0; $i < 20; $i++)
+        //for ($i = 0; $i < 3; $i++)
         {
             if($maze_array[$maze_position[0]][$maze_position[1]]&1)
             {
 
                 $maze_array[$maze_position[0]][$maze_position[1]]-=1;
-                if(($maze_position[0]!=0)||($maze_path[$maze_position[0]][$maze_position[1]]&1))
+                if(($maze_position[0]==0)||($maze_path[$maze_position[0]][$maze_position[1]]&1))
                 {
 
                 }
@@ -572,7 +572,7 @@ class LabyrintheController extends Controller
             {
 
                 $maze_array[$maze_position[0]][$maze_position[1]]-=2;
-                if(($maze_position[1]!=$formFields['length']-1)||($maze_path[$maze_position[0]][$maze_position[1]]&2))
+                if(($maze_position[1]==$formFields['length']-1)||($maze_path[$maze_position[0]][$maze_position[1]]&2))
                 {
 
                 }
@@ -597,8 +597,9 @@ class LabyrintheController extends Controller
             {
 
                 $maze_array[$maze_position[0]][$maze_position[1]]-=4;
-                if (($maze_position[0]!=$formFields['height']-1)||($maze_path[$maze_position[0]][$maze_position[1]]&4))
+                if (($maze_position[0]==$formFields['height']-1)||($maze_path[$maze_position[0]][$maze_position[1]]&4))
                 {
+
 
                 }
                 else
@@ -623,7 +624,7 @@ class LabyrintheController extends Controller
 
 
                 $maze_array[$maze_position[0]][$maze_position[1]]-=8;
-                if (($maze_position[1]!=0)||($maze_path[$maze_position[0]][$maze_position[1]]&8))
+                if (($maze_position[1]==0)||($maze_path[$maze_position[0]][$maze_position[1]]&8))
                 {
 
                 }
@@ -653,7 +654,7 @@ class LabyrintheController extends Controller
                 $maze_position=$last_position[sizeof($last_position)-1];
                 array_pop($last_position);
                 if($maze_array[$maze_position[0]][$maze_position[1]]==16){
-                    $solve= 0;
+                    $solve= 4;
                 }
 
             }
@@ -662,6 +663,7 @@ class LabyrintheController extends Controller
                 $solve= 0;
             }
         }
+
        if($solve==1) {
            $lab=Labyrinthe::firstWhere('labyrinthe_code',$formFields['labyrinthe_code']);
            $id=1;

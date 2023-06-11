@@ -38,3 +38,5 @@ route::get('/resolution/{id}',[LabyrintheController::class,'escapeThis',])->midd
 route::get('/historique',[UserController::class,'history'])->middleware(Authenticate::class);
 
 route::post('/check',[LabyrintheController::class,'create']);
+
+route::get('/interface',[LabyrintheController::class,'interface']);
